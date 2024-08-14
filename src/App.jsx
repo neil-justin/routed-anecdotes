@@ -1,6 +1,7 @@
+/* eslint-disable react/no-unescaped-entities */
 /* eslint-disable react/prop-types */
 import { useState } from 'react'
-import { Link, Route, Routes, useMatch } from 'react-router-dom'
+import { Link, Route, Routes, useMatch, useNavigate } from 'react-router-dom'
 
 const Menu = () => {
   const padding = {
@@ -57,20 +58,26 @@ const Footer = () => (
   </div>
 )
 
-const CreateNew = (props) => {
+const CreateNew = ({ addNew, onNotificationChange }) => {
   const [content, setContent] = useState('')
   const [author, setAuthor] = useState('')
   const [info, setInfo] = useState('')
 
+  const navigate = useNavigate()
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    props.addNew({
+    addNew({
       content,
       author,
       info,
       votes: 0
     })
+    navigate('/')
+    onNotificationChange(`a new anecdote '${content}' is created!`)
+    setTimeout(() => {
+      onNotificationChange('')
+    }, 5000)
   }
 
   return (
@@ -145,10 +152,12 @@ const App = () => {
       <h1>Software anecdotes</h1>
       <Menu />
 
+      {notification.length > 0 ? <p>{notification}</p> : null}
+
       <Routes>
         <Route path='/anecdotes/:id' element={<Anecdote anecdote={anecdote} />} />
         <Route path='/' element={<AnecdoteList anecdotes={anecdotes} />} />
-        <Route path='/create' element={<CreateNew addNew={addNew} />} />
+        <Route path='/create' element={<CreateNew addNew={addNew} onNotificationChange={setNotification} />} />
         <Route path='/about' element={<About />} />
       </Routes>
 
