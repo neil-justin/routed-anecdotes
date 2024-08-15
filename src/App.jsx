@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { Link, Route, Routes, useMatch, useNavigate } from 'react-router-dom'
 import { useField } from './hooks'
+import { omitReset } from './helpers'
 
 const Menu = () => {
   const padding = {
@@ -66,6 +67,10 @@ const CreateNew = ({ addNew, onNotificationChange }) => {
 
   const navigate = useNavigate()
 
+  const contentAttr = omitReset(content)
+  const authorAttr = omitReset(author)
+  const infoAttr = omitReset(info)
+
   const handleSubmit = (e) => {
     e.preventDefault()
     addNew({
@@ -94,15 +99,15 @@ const CreateNew = ({ addNew, onNotificationChange }) => {
       <form onSubmit={handleSubmit} onReset={handleFormReset}>
         <div>
           content
-          <input name='content' {...content} />
+          <input name='content' {...contentAttr} />
         </div>
         <div>
           author
-          <input name='author' {...author} />
+          <input name='author' {...authorAttr} />
         </div>
         <div>
           url for more info
-          <input name='info' {...info} />
+          <input name='info' {...infoAttr} />
         </div>
         <button>create</button>
         <button type="reset">reset</button>
