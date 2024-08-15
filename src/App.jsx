@@ -81,10 +81,17 @@ const CreateNew = ({ addNew, onNotificationChange }) => {
     }, 5000)
   }
 
+  const handleFormReset = (e) => {
+    e.preventDefault()
+    content.reset()
+    author.reset()
+    info.reset()
+  }
+
   return (
     <div>
       <h2>create a new anecdote</h2>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} onReset={handleFormReset}>
         <div>
           content
           <input name='content' {...content} />
@@ -98,6 +105,7 @@ const CreateNew = ({ addNew, onNotificationChange }) => {
           <input name='info' {...info} />
         </div>
         <button>create</button>
+        <button type="reset">reset</button>
       </form>
     </div>
   )
